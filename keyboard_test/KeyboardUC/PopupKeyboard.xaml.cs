@@ -43,24 +43,49 @@ namespace keyboard_test.KeyboardUC
         public PopupKeyboard()
         {
             this.InitializeComponent();
-            char[] row1 = enKey[0].ToCharArray();
-            char[] row2 = enKey[1].ToCharArray();
-            char[] row3 = enKey[2].ToCharArray();
+
+            LoadKey();
+
+            // add button event
+			// button tapp
+            ListView1.AddHandler(TappedEvent, new TappedEventHandler(ListView1_ItemClick), true);
+            ListView2.AddHandler(TappedEvent, new TappedEventHandler(ListView1_ItemClick), true);
+            ListView3.AddHandler(TappedEvent, new TappedEventHandler(ListView1_ItemClick), true);
+			
+            CloseBtn.AddHandler(TappedEvent, new TappedEventHandler(OnCloseBtn), true);
+            ShiftBtn.AddHandler(TappedEvent, new TappedEventHandler(OnShiftBtn), true);
+            SpaceBarBtn.AddHandler(TappedEvent, new TappedEventHandler(OnSpaceBarBtn), true);
+            EnterBtn.AddHandler(TappedEvent, new TappedEventHandler(OnEnterBtn), true);
+            DeleteBtn.AddHandler(TappedEvent, new TappedEventHandler(OnDeleteBtn), true);
+        }
+
+        private void LoadKey()
+        {
+            char[] row1;
+            char[] row2;
+            char[] row3;
+
+            isShiftKey = !isShiftKey;
+
+            if (isShiftKey)
+            {
+                row1 = enKeyShift[0].ToCharArray();
+                row2 = enKeyShift[1].ToCharArray();
+                row3 = enKeyShift[2].ToCharArray();
+            }
+            else
+            {
+                row1 = enKey[0].ToCharArray();
+                row2 = enKey[1].ToCharArray();
+                row3 = enKey[2].ToCharArray();
+            }
 
             // Data bind the list view with array items
             ListView1.ItemsSource = row1;
             ListView2.ItemsSource = row2;
             ListView3.ItemsSource = row3;
 
-            ListView1.AddHandler(TappedEvent, new TappedEventHandler(ListView1_ItemClick), true);
-            ListView2.AddHandler(TappedEvent, new TappedEventHandler(ListView1_ItemClick), true);
-            ListView3.AddHandler(TappedEvent, new TappedEventHandler(ListView1_ItemClick), true);
 
-            CloseBtn.AddHandler(TappedEvent, new TappedEventHandler(OnCloseBtn), true);
-            ShiftBtn.AddHandler(TappedEvent, new TappedEventHandler(OnShiftBtn), true);
-            SpaceBarBtn.AddHandler(TappedEvent, new TappedEventHandler(OnSpaceBarBtn), true);
-            EnterBtn.AddHandler(TappedEvent, new TappedEventHandler(OnEnterBtn), true);
-            DeleteBtn.AddHandler(TappedEvent, new TappedEventHandler(OnDeleteBtn), true);
         }
 
         private void ListView1_ItemClick(object sender, TappedRoutedEventArgs e)
@@ -103,30 +128,7 @@ namespace keyboard_test.KeyboardUC
         {
             if (!(SelectedItem is TextBox)) return;
 
-            char[] row1;
-            char[] row2;
-            char[] row3;
-
-            isShiftKey = !isShiftKey;
-
-            if (isShiftKey)
-            {
-                row1 = enKeyShift[0].ToCharArray();
-                row2 = enKeyShift[1].ToCharArray();
-                row3 = enKeyShift[2].ToCharArray();
-            }
-            else
-            {
-                row1 = enKey[0].ToCharArray();
-                row2 = enKey[1].ToCharArray();
-                row3 = enKey[2].ToCharArray();
-            }
-
-            ListView1.ItemsSource = row1;
-            ListView2.ItemsSource = row2;
-            ListView3.ItemsSource = row3;
-
-
+            LoadKey();
         }
 
         private void OnEnterBtn(object sender, TappedRoutedEventArgs e)
